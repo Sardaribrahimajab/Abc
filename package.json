@@ -45,6 +45,7 @@
     "@nestjs/schedule": "^2.1.0",
     "@nestjs/swagger": "^6.0.5",
     "@nestjs/typeorm": "^9.0.1",
+    "@paranode/typeorm-seeding": "^3.1.1",
     "@sendgrid/mail": "^7.7.0",
     "@types/passport": "^1.0.9",
     "algoliasearch": "^4.14.2",

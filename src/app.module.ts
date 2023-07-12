@@ -5,6 +5,8 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { ormConfigAsyncOptions } from './config/typeorm.config';
+import { AuthenticationModule } from './authentication/authentication.module';
+import { AuthenticationService } from './authentication/authentication.service';
 
 @Module({
   imports: [UserModule, 
@@ -20,6 +22,8 @@ import { ormConfigAsyncOptions } from './config/typeorm.config';
   // })
     ConfigModule.forRoot({isGlobal: true}),
     TypeOrmModule.forRootAsync(ormConfigAsyncOptions),
+    AuthenticationModule,
+    UserModule
 ],
   controllers: [AppController],
   providers: [AppService],

@@ -5,14 +5,7 @@ import { Role } from "../../enum/role.enum";
  * Create User Dto
  */
 export class CreateUserDto {
-    /**
-     * @param agency_id
-     * Id of agency in case of agent signup
-     */
-    @IsInt()
-    @IsOptional()
-    agency_id?: number;
-
+   
     /**
      * @param full_name
      * Full name of user

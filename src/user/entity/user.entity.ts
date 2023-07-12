@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne, DeleteDateColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn , OneToOne, ManyToOne, DeleteDateColumn } from "typeorm";
+import { roles } from "../roles/entity/role.entity";
 
 /**
  * Entity for user
@@ -28,6 +29,12 @@ export class User {
 
     @Column()
     user_type: string;
+
+    // @ManyToOne(() => roles, (user: roles) => roles)
+    // roles: roles;
+    @OneToOne(() => roles)
+    @JoinColumn()
+    role: number;
 
     @Column({ default: false })
     is_active: boolean;
