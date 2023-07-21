@@ -41,7 +41,7 @@
     "@nestjs/core": "^8.0.0",
     "@nestjs/jwt": "^9.0.0",
     "@nestjs/passport": "^9.0.0",
-    "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/platform-express": "^8.4.7",
     "@nestjs/schedule": "^2.1.0",
     "@nestjs/swagger": "^6.0.5",
     "@nestjs/typeorm": "^9.0.1",
@@ -53,6 +53,7 @@
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "log4js": "^6.7.0",
     "moment": "^2.29.4",
@@ -71,7 +72,8 @@
     "typeorm": "^0.3.7",
     "uuid": "^8.3.2",
     "winston": "^3.8.1",
-    "winston-logzio": "^5.1.6"
+    "winston-logzio": "^5.1.6",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.0/xlsx-0.20.0.tgz"
   },
   "devDependencies": {
     "@compodoc/compodoc": "^1.1.19",
