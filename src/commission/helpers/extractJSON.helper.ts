@@ -34,6 +34,7 @@ export const extractJSON = (
   });
   let filteredEmployeeJSON = [];
   let stockExecutiveCount = {};
+  let salesExecutiveCount = {};
 
   employeeJSON.forEach((data) => {
     if (data['Code']) {
@@ -54,6 +55,10 @@ export const extractJSON = (
       if (data['Designation'] === 'Stock Executive') {
         stockExecutiveCount[data['Station']] =
           (stockExecutiveCount[data['Station']] || 0) + 1;
+      }
+      if (data['Designation'] === 'Sale Executive') {
+        salesExecutiveCount[data['Station']] =
+          (salesExecutiveCount[data['Station']] || 0) + 1;
       }
     }
   });
@@ -100,6 +105,7 @@ export const extractJSON = (
     employeeJSON: filteredEmployeeJSON,
     saleByEmployeeByCode: employeesSaleObject,
     stockExecutiveCount,
+    salesExecutiveCount,
     branchesTotal,
   };
 };

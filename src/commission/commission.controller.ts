@@ -17,11 +17,11 @@ export class CommissionController {
   @UseInterceptors(AnyFilesInterceptor())
   async calculateCommission(
     @UploadedFiles() files: Array<Express.Multer.File>,
-    @Body() data: { isPromotional: boolean },
+    @Body() data,
   ) {
     const response = await this.commissionService.calculateCommission(
       files,
-      Boolean(data.isPromotional),
+      data.isPromotional ==='true',
     );
     return response;
   }

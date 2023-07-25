@@ -1,5 +1,3 @@
-import * as xlsx from 'xlsx';
-import * as fs from 'fs';
 import { Injectable, UploadedFiles } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -29,6 +27,7 @@ export class CommissionService {
         employeeJSON,
         saleByEmployeeByCode,
         stockExecutiveCount,
+        salesExecutiveCount,
         branchesTotal,
       } = extractJSON(files, isPromotional);
 
@@ -43,6 +42,7 @@ export class CommissionService {
               employeeJSON,
               saleByEmployeeByCode,
               stockExecutiveCount,
+              salesExecutiveCount,
               branchesTotal,
             },
             branches,
@@ -53,15 +53,6 @@ export class CommissionService {
         employee.commission = commission || 0;
         return employee;
       });
-
-      const workbook = xlsx.utils.book_new();
-      const worksheet = xlsx.utils.json_to_sheet(employeeCommissionData);
-      xlsx.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-      const excelFile = xlsx.write(workbook, {
-        bookType: 'xlsx',
-        type: 'buffer',
-      });
-      fs.writeFileSync('output.xlsx', excelFile);
 
       this.employeeService.bulkInsert(employeeCommissionData),
         this.salesService.bulkInsert(Object.values(saleByEmployeeByCode));

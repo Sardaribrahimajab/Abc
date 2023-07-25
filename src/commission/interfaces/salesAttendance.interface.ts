@@ -9,6 +9,9 @@ export interface ISalesAttendance {
   stockExecutiveCount: {
     [x: string]: number;
   };
+  salesExecutiveCount: {
+    [x: string]: number;
+  };
   branchesTotal: {
     [x: string]: number;
   };

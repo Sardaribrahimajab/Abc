@@ -8,6 +8,7 @@ export const calculateCommission = (
   {
     branchesTotal,
     saleByEmployeeByCode,
+    salesExecutiveCount,
     stockExecutiveCount,
   }: ISalesAttendance,
   branches: {
@@ -66,7 +67,6 @@ export const calculateCommission = (
       employee.branch.split(' ').length >= 1
         ? employee.branch.split(' ')[1]
         : '';
-    let sale = saleByEmployeeByCode[employee.code];
     const branch = branches[branchCode];
     if (branch) {
       const percentage =
@@ -77,9 +77,10 @@ export const calculateCommission = (
             info.cluster === branch.cluster,
         )?.percentage || 0;
       const netSaleValue = branchesTotal[branchCode] || 0;
-      const days = isPromotional
-        ? employee.totalDays - employee.absentDays - employee.leaveAvailed
-        : employee.totalDays - employee.absentDays;
+      const days =
+        isPromotional || designation === 'Sale Executive'
+          ? employee.totalDays - employee.absentDays - employee.leaveAvailed
+          : employee.totalDays - employee.absentDays;
       if (
         designation === 'Branch Manager' ||
         designation === 'Assistant Branch Manager'
@@ -99,6 +100,7 @@ export const calculateCommission = (
               ? key.split(' ')[1] === branchCode
               : false,
         );
+
         const perDayCommission =
           ((Number(percentage) / 100) * netSaleValue) /
           (employee.totalDays * executiveCount);
@@ -110,6 +112,57 @@ export const calculateCommission = (
             : 0;
 
         return Math.round(commission);
+      } else if (designation === 'Sale Executive') {
+        if (isPromotional) {
+          return days > 0
+            ? Math.round(
+                (((Number(percentage) / 100) * netSaleValue) /
+                  employee.totalDays) *
+                  days,
+              )
+            : 0;
+        } else {
+          let sale = saleByEmployeeByCode[employee.code]?.salesNetValue;
+          if (sale) {
+            const negativeSales = Object.values(saleByEmployeeByCode).filter(
+              (saleObj) =>
+                saleObj.employeeDesignation === 'Sale Executive' &&
+                saleObj.salesNetValue < 0,
+            );
+            const negativeSalesTotal = Math.abs(
+              negativeSales.reduce((previous, current) => {
+                return previous + current.salesNetValue;
+              }, 0),
+            );
+            const positiveSales = Object.values(saleByEmployeeByCode).filter(
+              (saleObj) =>
+                saleObj.employeeDesignation !== 'Sale Executive' &&
+                saleObj.salesNetValue > 0,
+            );
+            const positiveSalesTotal = positiveSales.reduce(
+              (previous, current) => {
+                return previous + current.salesNetValue;
+              },
+              0,
+            );
+            const currentExecutiveCountKey = Object.keys(
+              salesExecutiveCount,
+            ).find((key) =>
+              key.split(' ').length >= 1
+                ? key.split(' ')[1] === branchCode
+                : false,
+            );
+            sale = sale - negativeSalesTotal + positiveSalesTotal;
+
+            let commission =
+              days > 0
+                ? (((Number(percentage) / 100) * sale) / employee.totalDays) *
+                  days
+                : 0;
+            commission =
+              commission / salesExecutiveCount[currentExecutiveCountKey];
+          }
+        }
       }
     }
     return 0;
